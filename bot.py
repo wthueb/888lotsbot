@@ -11,22 +11,16 @@ class LotsBot():
     def __init__(self, driver: webdriver.Chrome) -> None:
         self.driver = driver
 
-        self.seen_items = []
+        self.added_skus = []
 
     def run(self, item_count: int) -> None:
         """parse individual items tab (https://beta.888lots.com/catalog)
         and add every item to the cart
         """
 
+        print('running bot...')
+
         self.driver.refresh()
-        
-        # scroll to bottom of page to load more items
-        #try:
-        #    self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
-        
-        #    sleep(10)
-        #except:
-        #    pass
         
         table = self.driver.find_elements_by_xpath('//div[@class="row products_page"]/div/ul/li')
 
@@ -35,39 +29,51 @@ class LotsBot():
 
             sku = re.search('B\d.{8}', item.text).group()
 
-            if sku in self.seen_items:
+            if sku in self.added_skus:
                 continue
 
             print('processing: SKU ' + sku)
-
-            #if item contains div with class containing 'alert':
 
             if 'not order it' in item.text:
                 print(' ~ beep beep boop boop the item is already in someone\'s cart')
 
                 continue
 
-            #buy_now =
-            
-            #buy_now.click()
-            
-            #add_to_cart =
+            if 'In your cart' in item.text:
+                print(' ~ beep beep boop boop the item is already in your cart')
 
-            #add_to_cart.click()
+                self.added_skus.append(sku)
 
-            self.seen_items.append(sku)
+                continue
+
+            buy_now = item.find_element_by_xpath('.//div[@class="cartbrnh"]/a')
+            
+            buy_now.click()
+
+            sleep(2)
+            
+            add_to_cart = item.find_element_by_xpath('//button[contains(text(), "Add to cart")]')
+
+            add_to_cart.click()
+
+            sleep(2)
+
+            self.added_skus.append(sku)
+
+            self.added_skus = self.added_skus[:item_count]
+
+        print('finished running the bot')
         
-        # check for runtime, optimize so it does not run constantly but fast enough
-
-
-    def run_loop(self, item_count: int=20) -> None:
+    def run_loop(self, item_count: int) -> None:
         while True:
             if not os.path.isfile('run'):
-                print('run file does not exist, sleeping bot for 10 seconds...')
+                print('run file does not exist, sleeping bot for 10 seconds...\n')
                 
                 sleep(10)
             
             self.run(item_count)
+
+            print('sleeping for 10 seconds...\n')
 
             sleep(10)
 
@@ -117,7 +123,7 @@ def main() -> None:
     
     bot = LotsBot(driver)
 
-    bot.run_loop()
+    bot.run_loop(20)
 
 
 if __name__ == '__main__':
