@@ -58,6 +58,8 @@ class LotsBot():
 
             sleep(2)
 
+            print(' ~ the item has been added to your cart')
+
             self.added_skus.append(sku)
 
             self.added_skus = self.added_skus[:item_count]
