@@ -80,13 +80,6 @@ class LotsBot():
             sleep(10)
 
 
-def send_keys_slow(elem: webdriver.remote.webelement.WebElement, text: str) -> None:
-    for c in text:
-        elem.send_keys(c)
-
-        sleep(.05)
-
-
 def main() -> None:
     options = webdriver.ChromeOptions()
 
@@ -106,6 +99,12 @@ def main() -> None:
 
     email = driver.find_element_by_xpath('//form/div/input[@name="email"]')
     password = driver.find_element_by_xpath('//input[@name="password"]')
+
+    def send_keys_slow(elem: webdriver.remote.webelement.WebElement, text: str) -> None:
+        for c in text:
+            elem.send_keys(c)
+
+            sleep(.05)
 
     send_keys_slow(email, login.email)
     send_keys_slow(password, login.password)
