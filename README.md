@@ -7,3 +7,4 @@ bot that utilizes selenium and headless chrome to automatically put the most rec
 - change the parameter for LotsBot.run_loop for the number of most recent items to be added to the cart
 - `pip3 install -r requirements.txt`
 - `python3 bot.py`
+- touch file named 'run' in the bot's directory to enable the bot, and delete the file to disable it
