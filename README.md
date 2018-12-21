@@ -1,10 +1,8 @@
 # 888lotsbot
 
-bot that utilizes selenium and headless chrome to automatically put the most recent items on the individual items tab on https://888lots.com/
+bot that utilizes selenium and headless chrome to automatically put the most recent items on https://888lots.com/ into the cart
 
 ### usage:
 - create login.py file with 'email' and 'password' variables which login to 888lots.com
-- change the parameter for LotsBot.run_loop for the number of most recent items to be added to the cart
 - `pip3 install -r requirements.txt`
-- `python3 bot.py`
-- touch file named 'run' in the bot's directory to enable the bot, and delete the file to disable it
+- `python3 bot.py NUM_ITEMS` replacing NUM_ITEMS with the amount of recent items you would like to be added. default is 20
