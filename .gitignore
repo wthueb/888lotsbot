@@ -4,3 +4,8 @@ __pycache__/
 
 /login.py
 /run
+/build
+/dist
+/bot.spec
+/chromedriver.exe
+/debug.log

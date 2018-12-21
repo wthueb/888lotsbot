@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 from time import sleep
 
 from selenium import webdriver
@@ -50,13 +51,22 @@ class LotsBot():
             
             buy_now.click()
 
-            sleep(2)
-            
+            sleep(1)
+
             add_to_cart = item.find_element_by_xpath('//button[contains(text(), "Add to cart")]')
 
-            add_to_cart.click()
+            if not add_to_cart.is_displayed() or not add_to_cart.is_enabled():
+                print(' ~ beep beep boop boop the item is already in someone\s cart')
 
-            sleep(2)
+                cancel = item.find_element_by_xpath('//button[contains(text(), "Cancel")]')
+
+                cancel.click()
+
+                continue
+
+            add_to_cart.click()
+            
+            sleep(1)
 
             print(' ~ the item has been added to your cart')
 
@@ -68,16 +78,19 @@ class LotsBot():
         
     def run_loop(self, item_count: int) -> None:
         while True:
-            if not os.path.isfile('run'):
-                print('run file does not exist, sleeping bot for 10 seconds...\n')
-                
-                sleep(10)
-            
-            self.run(item_count)
+            #if not os.path.isfile('run'):
+            #    print('run file does not exist, sleeping bot for 10 seconds...\n')
+            #    
+            #    sleep(10)
 
-            print('sleeping for 10 seconds...\n')
+            try:
+                self.run(item_count)
+            except Exception as e:
+                print(e)
+                print(' ~ beep beep boop boop there was an error')
+                print(' ~ unsure of how to handle this error, so restarting...')
 
-            sleep(10)
+            sleep(3)
 
 
 def main() -> None:
@@ -124,7 +137,12 @@ def main() -> None:
     
     bot = LotsBot(driver)
 
-    bot.run_loop(20)
+    count = 20
+
+    if len(sys.argv) > 1:
+        count = sys.argv[1]
+
+    bot.run_loop(count)
 
 
 if __name__ == '__main__':
