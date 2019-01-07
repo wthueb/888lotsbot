@@ -90,13 +90,11 @@ class LotsBot():
                 print(' ~ beep beep boop boop there was an error')
                 print(' ~ unsure of how to handle this error, so restarting...')
 
-            sleep(3)
-
 
 def main() -> None:
     options = webdriver.ChromeOptions()
 
-    #options.add_argument('headless')
+    options.add_argument('headless')
 
     driver = webdriver.Chrome(options=options)
     
