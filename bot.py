@@ -27,8 +27,14 @@ class LotsBot():
 
         for i in range(item_count):
             item = table[i]
+            
+            sku = re.search('[BX]\d.{8}', item.text)
 
-            sku = re.search('B\d.{8}', item.text).group()
+            if not sku:
+                print('sku not able to be found, continuing')
+                continue
+            
+            sku = sku.group()
 
             if sku in self.added_skus:
                 continue
@@ -94,7 +100,7 @@ class LotsBot():
 def main() -> None:
     options = webdriver.ChromeOptions()
 
-    options.add_argument('headless')
+    #options.add_argument('headless')
 
     driver = webdriver.Chrome(options=options)
     
@@ -138,7 +144,7 @@ def main() -> None:
     count = 20
 
     if len(sys.argv) > 1:
-        count = sys.argv[1]
+        count = int(sys.argv[1])
 
     bot.run_loop(count)
 
