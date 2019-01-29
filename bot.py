@@ -100,7 +100,7 @@ class LotsBot():
 def main() -> None:
     options = webdriver.ChromeOptions()
 
-    #options.add_argument('headless')
+    options.add_argument('headless')
 
     driver = webdriver.Chrome(options=options)
     
