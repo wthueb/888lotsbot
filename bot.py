@@ -100,7 +100,8 @@ class LotsBot():
 def main() -> None:
     options = webdriver.ChromeOptions()
 
-    options.add_argument('headless')
+    if '--debug' not in sys.argv:
+        options.add_argument('headless')
 
     driver = webdriver.Chrome(options=options)
     
@@ -144,7 +145,7 @@ def main() -> None:
     count = 20
 
     if len(sys.argv) > 1:
-        count = int(sys.argv[1])
+        count = int(sys.argv[len(sys.argv) - 1])
 
     bot.run_loop(count)
 
